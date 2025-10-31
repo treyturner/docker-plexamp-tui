@@ -1,0 +1,21 @@
+name: Test plexamp-tui Docker image
+description: Run tests to verify the built app and Docker image work correctly
+
+inputs:
+  image-ref:
+    description: 'Docker image reference to test'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Test app runs
+      shell: bash -euo pipefail {0}
+      run: |
+        output="$(docker run --rm ${{ inputs.image-ref }} plexamp-tui --help)"
+        if ! grep -q 'Usage' <<< "${output}"; then
+          echo "❌ Unexpected output:"
+          echo "${output}"
+          exit 1
+        fi
+        echo "✅ Usage shown"
