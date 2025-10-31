@@ -9,18 +9,18 @@ Container image that builds and runs [plexamp-tui](https://github.com/spiercey/p
 - Persistent configuration via `/home/app/.config/plexamp-tui` volume.
 
 ## Quick start
-Pull a published release (replace the tag as needed):
+Pull a published release (replace `latest` with a version tag like `v0.2.0` as needed):
 
 ```bash
-docker pull ghcr.io/treyturner/plexamp-tui
-# or: docker pull docker.io/treyturner/plexamp-tui
+docker pull ghcr.io/treyturner/plexamp-tui:latest
+# or: docker pull docker.io/treyturner/plexamp-tui:latest
 ```
 
 Run the container interactively, persisting config in a named volume:
 
 ```bash
 docker run --rm -it \
-  -v plexamp-config:/home/app/.config/plexamp-tui \
+  -v plexamp-tui-config:/home/app/.config/plexamp-tui \
   ghcr.io/treyturner/plexamp-tui
 ```
 
@@ -31,14 +31,15 @@ docker run --rm -it \
   -v "$(pwd)/config:/home/app/.config/plexamp-tui" \
   ghcr.io/treyturner/plexamp-tui
 ```
-On the first run, the entrypoint detects a missing `plex_auth.json`, launches the upstream authentication flow, and then starts the TUI. Subsequent runs reuse the saved credentials and go straight to the interface.
+
+On the first run, the entrypoint detects a missing `plex_auth.json`, launches the authentication flow, and then starts the TUI. Subsequent runs reuse the saved credentials and go straight to the interface.
 
 The container respects the standard `TZ` environment variable if you want to set the timezone explicitly:
 
 ```bash
 docker run --rm -it \
   -e TZ=US/Central \
-  -v plexamp-config:/home/app/.config/plexamp-tui \
+  -v plexamp-tui-config:/home/app/.config/plexamp-tui \
   ghcr.io/treyturner/plexamp-tui
 ```
 
@@ -60,7 +61,7 @@ docker run --rm ghcr.io/treyturner/plexamp-tui:v0.2.0 plexamp-tui --help
 ## Configuration reference
 - config lives within `/home/app/.config/plexamp-tui` inside the container
 - `plex_auth.json` stores the Plex token that is generated during authentication
-- `config.json` (created by the upstream project) holds runtime preferences; edit it on the host if you need to tweak options
+- `config.json` holds runtime preferences; edit it on the host if you need to tweak options
 
 ### Runtime environment variables
 - `PUID` (default `99`): container user ID used to run `plexamp-tui`. Set this to match your host user when bind-mounting.
