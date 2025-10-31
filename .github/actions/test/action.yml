@@ -12,7 +12,12 @@ runs:
     - name: Test app runs
       shell: bash -euo pipefail {0}
       run: |
-        output="$(docker run --rm ${{ inputs.image-ref }} plexamp-tui --help)"
+        # Use `script` to allocate a pseudo-TTY so docker accepts `-t` even in CI.
+        if ! raw_output="$(script -qfc "docker run -it --rm ${{ inputs.image-ref }} plexamp-tui --help" /dev/null)"; then
+          echo "❌ Command failed to execute"
+          exit 1
+        fi
+        output="${raw_output//$'\r'/}"
         if ! grep -q 'Usage' <<< "${output}"; then
           echo "❌ Unexpected output:"
           echo "${output}"

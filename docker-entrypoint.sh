@@ -69,6 +69,14 @@ if ! su-exec "$APP_USER:$APP_GROUP" sh -c "mkdir -p '$CONFIG_DIR' && touch '$PER
 fi
 
 run_plexamp() {
+  if [ "$#" -gt 0 ]; then
+    case "$1" in
+      --help|-help|-h|help)
+        exec su-exec "$APP_USER:$APP_GROUP" plexamp-tui "$@"
+        ;;
+    esac
+  fi
+
   if ! su-exec "$APP_USER:$APP_GROUP" sh -c "[ -f '$AUTH_FILE' ]"; then
     if ! printf '%s\0' "$@" | grep -q -- '--auth'; then
       echo "plexamp-tui: no plex_auth.json detected, starting authentication flow..."
