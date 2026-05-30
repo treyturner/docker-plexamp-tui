@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-ARG UPSTREAM_REF=v0.2.0
+ARG UPSTREAM_REF=v0.3.0
 ARG UPSTREAM_TARBALL=""
 
 ## Builder
@@ -21,7 +21,7 @@ RUN set -eux; \
         */*) ref_path="refs/heads/${ref_path}" ;; \
         *) ref_path="refs/tags/${ref_path}" ;; \
       esac; \
-      tarball="https://codeload.github.com/spiercey/plexamp-tui/tar.gz/${ref_path}"; \
+      tarball="https://codeload.github.com/treyturner/plexamp-tui/tar.gz/${ref_path}"; \
     fi; \
     wget -O src.tar.gz "${tarball}"
 
@@ -55,7 +55,7 @@ ENV PUID=99 \
     UMASK=002
 LABEL org.opencontainers.image.title="plexamp-tui" \
       org.opencontainers.image.description="Terminal controller for Plexamp headless" \
-      org.opencontainers.image.source="https://github.com/spiercey/plexamp-tui" \
+      org.opencontainers.image.source="https://github.com/treyturner/plexamp-tui" \
       org.opencontainers.image.version="${UPSTREAM_REF}" \
       org.opencontainers.image.licenses="MIT"
 

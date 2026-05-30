@@ -1,15 +1,14 @@
 # docker-plexamp-tui
 
-Container image that builds and runs [plexamp-tui](https://github.com/spiercey/plexamp-tui), a terminal UI for controlling Plexamp headless players. The image is rebuilt from upstream release archives and published to Docker Hub and GitHub Container Registry.
-
+Container image for [treyturner/plexamp-tui](https://github.com/treyturner/plexamp-tui), a fork of @spiercey's terminal UI for controlling Plexamp headless players.
 ## Image highlights
-- Reproducible build from upstream refs (tags or branches) via configurable build args (defaults to `v0.2.0`).
+- Reproducible build from upstream refs (tags or branches) via configurable build args (defaults to `v0.3.0`).
 - Minimal Alpine runtime with a non-root user and bundled CA certificates.
 - First-run authentication helper that automatically launches `plexamp-tui --auth` when no Plex token is present.
 - Persistent configuration via `/home/app/.config/plexamp-tui` volume.
 
 ## Quick start
-Pull a published release (replace `latest` with a version tag like `v0.2.0` as needed):
+Pull a published release (replace `latest` with a version tag like `v0.3.0` as needed):
 
 ```bash
 docker pull ghcr.io/treyturner/plexamp-tui:latest
@@ -55,7 +54,7 @@ docker run --rm -it \
 To pass additional flags (or more/alternate commands?), append them after the image reference:
 
 ```bash
-docker run --rm ghcr.io/treyturner/plexamp-tui:v0.2.0 plexamp-tui --help
+docker run --rm ghcr.io/treyturner/plexamp-tui:v0.3.0 plexamp-tui --help
 ```
 
 ## Configuration reference
@@ -74,7 +73,7 @@ The entrypoint recreates the runtime user/group on each start so you can overrid
 You can rebuild the container from source, optionally pointing at a different upstream ref or tarball:
 
 ```bash
-# build with the default upstream ref (v0.2.0 at the moment)
+# build with the default upstream ref (v0.3.0 at the moment)
 docker build -t local/plexamp-tui .
 
 # pin to a different upstream tag
@@ -109,7 +108,7 @@ Each workflow relies on composite actions in `.github/actions/`:
 - `publish` authenticates with registries and pushes the requested references.
 
 ## Versioning & tags
-- `UPSTREAM_REF` (default `v0.2.0`) determines which `plexamp-tui` ref (tag or branch) is bundled.
+- `UPSTREAM_REF` (default `v0.3.0`) determines which `plexamp-tui` ref (tag or branch) is bundled.
 - Dev builds are tagged using a sanitized version of the upstream ref (e.g., `v0.3.0-dev` or `feature-my-branch-dev`) plus a unique run suffix for traceability.
 - Release tags are promoted from dev builds once validated, ensuring identical image digests across registries.
 
@@ -117,7 +116,6 @@ Each workflow relies on composite actions in `.github/actions/`:
 - Make sure your terminal is prepared for a full-screen TUI; use `docker run -it` so the container has an interactive TTY.
 - If authentication fails, remove the existing `plex_auth.json` from your mounted config directory and rerun the container to trigger the login flow again.
 - When bind-mounting configuration, ensure the host directory is writable by the configured UID/GID (defaults `99:100`). The entrypoint checks this and exits early with a helpful message if it cannot create files.
-- Upstream issues or regressions should be reported to [spiercey/plexamp-tui](https://github.com/spiercey/plexamp-tui); container-specific problems can be filed here.
 
 ## Licensing
 The upstream `plexamp-tui` project is licensed under MIT. Each container includes the upstream license at `/usr/share/licenses/plexamp-tui/LICENSE`; review it to understand the terms before redistributing the image.

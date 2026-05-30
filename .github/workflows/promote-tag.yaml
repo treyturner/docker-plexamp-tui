@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       release-version:
-        description: "Targeted release version tag (e.g. 'v0.2.0')"
+        description: "Targeted release version tag (e.g. 'v0.3.0')"
         type: string
         required: true
       promote-latest:
