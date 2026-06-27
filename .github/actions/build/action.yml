@@ -4,15 +4,12 @@ description: Build a Dockerfile
 inputs:
   label:
     description: "Optional build suffix, e.g. 'dev'"
-    type: string
     required: false
   repos:
     description: "Newline-separated list of <registry>/<repository> used to build refs"
-    type: string
     required: false
   upstream-ref:
     description: "Upstream ref (tag or branch) to build"
-    type: string
     required: true
 
 outputs:
@@ -116,13 +113,13 @@ runs:
         } >> "$GITHUB_OUTPUT"
 
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5  # v4.1.0
       with:
         driver: docker
 
     - name: Build image
       id: build
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf  # v7.2.0
       with:
         context: .
         push: false

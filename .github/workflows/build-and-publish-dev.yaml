@@ -19,7 +19,7 @@ jobs:
       UPSTREAM_REF: v0.3.0
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
 
       - name: Build
         id: build
@@ -28,6 +28,7 @@ jobs:
           label: 'dev'
           repos: |
             ghcr.io/treyturner/plexamp-tui
+            forgejo.treyturner.info/treyturner/plexamp-tui
             docker.io/treyturner/plexamp-tui
           upstream-ref: ${{ inputs.upstream-ref || env.UPSTREAM_REF }}
 
@@ -41,5 +42,6 @@ jobs:
         with:
           dockerhub-username: ${{ vars.DOCKERHUB_USERNAME }}
           dockerhub-password: ${{ secrets.DOCKERHUB_TOKEN }}
+          forgejo-registry-token: ${{ secrets.FORGEJO_REGISTRY_TOKEN }}
           github-token: ${{ github.token }}
           refs: ${{ steps.build.outputs.refs }}
